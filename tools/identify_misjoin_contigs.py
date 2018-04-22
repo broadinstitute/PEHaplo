@@ -424,7 +424,7 @@ for i in range(len(contig_read_ids)):
             reads_dict.pop(base)
     
     ## calculate the interval cutoff
-    inv_cut=-math.log(0.01)*con_len/float(count_pair)
+    inv_cut=-math.log(0.01)*con_len/float(max(count_pair, 1))
     print(i,inv_cut)
     ## step1: find the intervals
     for pair in contig_pairs:

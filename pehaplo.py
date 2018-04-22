@@ -26,6 +26,8 @@ def main():
     basic = parser.add_argument('-correct', dest='contig_correct', type=str, help='whether apply alignment based contigs correction(yes/no), default = no')
     basic = parser.add_argument('-t', '--threads', dest='threads', type=int, help='threads for karect, sga, bowtie2')
     basic = parser.add_argument('-m', '--memory', dest='memory', type=str, help='maximal memory for readjoiner (xGB), default: 2GB')
+    basic = parser.add_argument('-m', '--memory', dest='memory', type=str, help='maximal memory for readjoiner (xGB), default: 2GB')
+    parser.add_argument('--cleanup', action='store_true', help='clean up intermediate files')
 
     if len(sys.argv[1:])==0:
         parser.print_help()        #print usage
@@ -126,11 +128,13 @@ def main():
             subprocess.check_call('mv Contigs_clipped.rmdup.fa Contigs_clipped.fa', shell=True)
         
         # ---------------- clean up -------------------------
-        subprocess.check_call('mkdir ../temp', shell=True)
-        subprocess.check_call('cp Contigs.fa Contigs_clipped.fa PEG_nodes_sequences.fa ../temp', shell=True)
-        subprocess.check_call('rm -rf *', shell=True)
-        subprocess.check_call('cp ../temp/* .', shell=True)
-        subprocess.check_call('rm -rf ../temp/', shell=True)
+
+        if args.cleanup:
+            subprocess.check_call('mkdir ../temp', shell=True)
+            subprocess.check_call('cp Contigs.fa Contigs_clipped.fa PEG_nodes_sequences.fa ../temp', shell=True)
+            subprocess.check_call('rm -rf *', shell=True)
+            subprocess.check_call('cp ../temp/* .', shell=True)
+            subprocess.check_call('rm -rf ../temp/', shell=True)
 
 if __name__=='__main__':
     main()

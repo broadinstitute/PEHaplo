@@ -25,11 +25,11 @@ with open(nondup_file,'r') as f:
                 f_out.write(title_dict[base][1:]+'\t'+title[1:]+'\n')
                 assert title_dict[base].endswith('1') and title.endswith('2')
 
-unpaired_list=[x for x in title_base_dict.keys() if title_base_dict[x]==1]
-paired_list=[x for x in title_base_dict.keys() if title_base_dict[x]==2]
-print "Number of total reads:\t",2*len(paired_list)+len(unpaired_list)
-print "Number of paired reads:\t",2*len(paired_list)
-print "Number of unpaired reads:\t",len(unpaired_list)
+unpaired_list=[x for x in list(title_base_dict.keys()) if title_base_dict[x]==1]
+paired_list=[x for x in list(title_base_dict.keys()) if title_base_dict[x]==2]
+print("Number of total reads:\t",2*len(paired_list)+len(unpaired_list))
+print("Number of paired reads:\t",2*len(paired_list))
+print("Number of unpaired reads:\t",len(unpaired_list))
 
 f_out.close()
 

@@ -65,7 +65,7 @@ def create_graph_apsp(overlap_file):
                 G.add_edge(read_1,read_2,label=overlap_len)
                 read_node_dict[read_2]=read_2
             elif read_2 in G[read_1]:
-                print "Duplicate edge found!",line.strip()
+                print("Duplicate edge found!",line.strip())
                 if int(overlap_len)>int(G[read_1][read_2][0]['label']):
                     G[read_1][read_2][0]['label']=overlap_len
 
@@ -84,7 +84,7 @@ def create_graph_apsp_undirected(overlap_file):
                 G.add_node(read_2)
                 G.add_edge(read_1,read_2,label=overlap_len)
             elif read_2 in G[read_1]:
-                print "Duplicate edge found!",line.strip()
+                print("Duplicate edge found!",line.strip())
                 if int(overlap_len)>int(G[read_1][read_2]['label']):
                     G[read_1][read_2]['label']=overlap_len
     return G
@@ -193,7 +193,7 @@ def get_linked_cliques(cliques):
                 clique_nodes[N].append(i)
         G.add_node(i)
 
-    edges = [x for x in clique_nodes.values() if len(x)>1]
+    edges = [x for x in list(clique_nodes.values()) if len(x)>1]
     for edge in edges:
         for m in range(len(edge)-1):
             for n in range(m+1, len(edge)):
@@ -218,7 +218,7 @@ def merge_linked_cliques(G, G_un, read_node_map, read_db, clique_cutoff):
     while linked_cliques:
         #pdb.set_trace()
         for clique in linked_cliques:
-            print len(clique)
+            print(len(clique))
             G_clique = G.subgraph(clique)
             DFS_transitive_reduction(G_clique)
 
@@ -283,7 +283,7 @@ def merge_linked_cliques_2(G, G_un, read_node_map, read_db, clique_cutoff):
     while max_cliques:
         G_all_clique = nx.MultiDiGraph()
         for clique in max_cliques:
-            print len(clique)
+            print(len(clique))
             GC_single = G.subgraph(clique)
             DFS_transitive_reduction(GC_single)
             for this_edge in GC_single.edges():
@@ -296,11 +296,11 @@ def merge_linked_cliques_2(G, G_un, read_node_map, read_db, clique_cutoff):
                     overlap = G[n1][n2][0]['label']
                     G_all_clique.add_edge(n1, n2, label=overlap)
         #DFS_transitive_reduction(G_all_clique)
-        print "Transitive reduction of all cliques finished!", len(G_all_clique), len(G_all_clique.edges())
+        print("Transitive reduction of all cliques finished!", len(G_all_clique), len(G_all_clique.edges()))
 
         subgraphs = nx.weakly_connected_components(G_all_clique)
         for subgraph in subgraphs:
-            print len(subgraph)
+            print(len(subgraph))
             G_clique = G_all_clique.subgraph(subgraph)
 
             start_nodes = [x for x in G_clique if G_clique.in_degree(x)==0]
@@ -410,7 +410,7 @@ def merge_linked_cliques_3(G, G_un, read_node_map, read_db, clique_cutoff):
         idx = 0
         for clique in max_cliques:
             idx+=1
-            print idx, len(clique)
+            print(idx, len(clique))
             GC_single = G.subgraph(clique)
             #DFS_transitive_reduction(GC_single)
             GC_single = transitive_reduction(GC_single)
@@ -428,14 +428,14 @@ def merge_linked_cliques_3(G, G_un, read_node_map, read_db, clique_cutoff):
                     G_all_clique.add_node(N, read_ids = G.node[N]['read_ids'])
 
         #DFS_transitive_reduction(G_all_clique)
-        print "Transitive reduction of all cliques finished!", len(G_all_clique.nodes()), len(G_all_clique.edges())
+        print("Transitive reduction of all cliques finished!", len(G_all_clique.nodes()), len(G_all_clique.edges()))
         #pdb.set_trace()
 
         subgraphs = nx.weakly_connected_components(G_all_clique)
         idx = 0
         for subgraph in subgraphs:
             idx +=1
-            print idx,len(subgraph)
+            print(idx,len(subgraph))
             G_clique = G_all_clique.subgraph(subgraph)
 
             start_nodes = [x for x in G_clique if G_clique.in_degree(x)==0]
@@ -515,7 +515,7 @@ def merge_linked_cliques_3(G, G_un, read_node_map, read_db, clique_cutoff):
                             G.add_edge(new_end_node, succ_node, label = o)
                             G_un.add_edge(new_end_node, succ_node, lable = o)
             
-        print len(G_un.nodes()),len(G_un.edges())
+        print(len(G_un.nodes()),len(G_un.edges()))
     
         max_cliques = list(nx.find_cliques(G_un))
         max_cliques = [clique for clique in max_cliques if len(clique)>clique_cutoff]
@@ -526,7 +526,7 @@ def merge_isolated_cliques(G, G_un, read_node_map, read_db):
     isolated_cliques = get_isolated_cliques(max_cliques)
     while isolated_cliques:
         for clique in isolated_cliques:
-            print len(clique)
+            print(len(clique))
             G_clique = G.subgraph(clique)
             DFS_transitive_reduction(G_clique)
 
@@ -570,7 +570,7 @@ def merge_cliques(G, G_un, read_node_map, read_db):
     max_cliques = [clique for clique in max_cliques if len(clique)>3]
     while max_cliques:
         clique = max_cliques[0]
-        print len(clique)
+        print(len(clique))
         G_clique = G.subgraph(clique)
         DFS_transitive_reduction(G_clique)
 
@@ -639,7 +639,7 @@ subprocess.call("Apsp sequences.txt -p 4 -m %s -o 2 >overlap_whole.txt" % overla
 overlap_file='overlap_whole.txt'
 G, read_node_map = create_graph_apsp(overlap_file)
 G_undirected = create_graph_apsp_undirected(overlap_file)
-print "The nodes of the whole graph is: %d; the edges of the whole graph is: %d." % (len(G.nodes()), len(G.edges()))
+print("The nodes of the whole graph is: %d; the edges of the whole graph is: %d." % (len(G.nodes()), len(G.edges())))
 pair_dict = read_pair_file(pair_file, read_map)
 
 idx=0
@@ -653,13 +653,13 @@ for subgraph in subgraphs:
     G_tr = linear_transitive_reduction(G_subgraph)
 
     end_time = datetime.now()
-    print idx, "The transitive reduction time is:\t", end_time - start_time
-    print "The nodes of the TR graph is: %d; the edges of the TR graph is: %d." % (len(G_tr.nodes()), len(G_tr.edges()))
+    print(idx, "The transitive reduction time is:\t", end_time - start_time)
+    print("The nodes of the TR graph is: %d; the edges of the TR graph is: %d." % (len(G_tr.nodes()), len(G_tr.edges())))
     
     G_tr2 = linear_transitive_reduction2(G_subgraph)
     end_time2 = datetime.now()
-    print idx, "The transitive reduction time is:\t", end_time2 - end_time
-    print "The nodes of the TR graph is: %d; the edges of the TR graph is: %d." % (len(G_tr2.nodes()), len(G_tr2.edges()))
+    print(idx, "The transitive reduction time is:\t", end_time2 - end_time)
+    print("The nodes of the TR graph is: %d; the edges of the TR graph is: %d." % (len(G_tr2.nodes()), len(G_tr2.edges())))
     break
 
 

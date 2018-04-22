@@ -65,7 +65,7 @@ def create_graph_apsp(overlap_file):
                 G.add_edge(read_1,read_2,label=overlap_len)
                 read_node_dict[read_2]=read_2
             elif read_2 in G[read_1]:
-                print "Duplicate edge found!",line.strip()
+                print("Duplicate edge found!",line.strip())
                 if int(overlap_len)>int(G[read_1][read_2][0]['label']):
                     G[read_1][read_2][0]['label']=overlap_len
 
@@ -84,7 +84,7 @@ def create_graph_apsp_undirected(overlap_file):
                 G.add_node(read_2)
                 G.add_edge(read_1,read_2,label=overlap_len)
             elif read_2 in G[read_1]:
-                print "Duplicate edge found!",line.strip()
+                print("Duplicate edge found!",line.strip())
                 if int(overlap_len)>int(G[read_1][read_2]['label']):
                     G[read_1][read_2]['label']=overlap_len
     return G
@@ -170,7 +170,7 @@ def linear_merge_linked_cliques(G, G_un, read_node_map, read_db, clique_cutoff):
     max_cliques = list(nx.find_cliques(G_un))
     max_cliques = [clique for clique in max_cliques if len(clique)>=clique_cutoff]
 
-    print(len(max_cliques))
+    print((len(max_cliques)))
     for clique in max_cliques:
         #result.add_nodes_from(clique)
         for N in clique:
@@ -204,7 +204,7 @@ def linear_merge_linked_cliques(G, G_un, read_node_map, read_db, clique_cutoff):
     new_num = len(result.nodes())
     while old_num != new_num:
         idx+=1
-        print idx
+        print(idx)
         old_num = len(result.nodes())
         #pdb.set_trace()
         result = linear_transitive_reduction(result)
@@ -220,7 +220,7 @@ def linear_merge_linked_cliques(G, G_un, read_node_map, read_db, clique_cutoff):
     #pdb.set_trace()
     while(max_cliques):
         result2 = nx.MultiDiGraph()
-        print("New round:", len(max_cliques))
+        print(("New round:", len(max_cliques)))
         for clique in max_cliques:
             #result2.add_nodes_from(clique)
             for N in clique:
@@ -254,7 +254,7 @@ def linear_merge_linked_cliques(G, G_un, read_node_map, read_db, clique_cutoff):
         new_num = len(result.nodes())
         while old_num != new_num:
             idx+=1
-            print "New round:", idx
+            print("New round:", idx)
             old_num = len(result2.nodes())
             result2 = linear_transitive_reduction(result2)
             DFS_collapse_graph(result2, read_node_map, read_db)
@@ -264,7 +264,7 @@ def linear_merge_linked_cliques(G, G_un, read_node_map, read_db, clique_cutoff):
         G_un = result2.to_undirected()
         max_cliques = list(nx.find_cliques(G_un))
         max_cliques = [clique for clique in max_cliques if len(clique)>=clique_cutoff]
-        print "%dth iteration finished!" % it
+        print("%dth iteration finished!" % it)
         it += 1
     """
     G_un = result.to_undirected()
@@ -324,7 +324,7 @@ subprocess.call("Apsp sequences.txt -p 4 -m %s -o 2 >overlap_whole.txt" % overla
 overlap_file='overlap_whole.txt'
 G, read_node_map = create_graph_apsp(overlap_file)
 G_undirected = create_graph_apsp_undirected(overlap_file)
-print "The nodes of the whole graph is: %d; the edges of the whole graph is: %d." % (len(G.nodes()), len(G.edges()))
+print("The nodes of the whole graph is: %d; the edges of the whole graph is: %d." % (len(G.nodes()), len(G.edges())))
 pair_dict = read_pair_file(pair_file, read_map)
 #pdb.set_trace()
 
@@ -341,24 +341,24 @@ for subgraph in subgraphs:
     start_time=datetime.now()
     G_subgraph=G.subgraph(subgraph)
     G_un_subgraph=G_undirected.subgraph(subgraph)
-    print "The nodes of the subgraph is: %d; the edges of the subgraph is: %d." % (len(G_subgraph.nodes()), len(G_subgraph.edges()))
+    print("The nodes of the subgraph is: %d; the edges of the subgraph is: %d." % (len(G_subgraph.nodes()), len(G_subgraph.edges())))
 
     ## merge the cliques
     #merge_isolated_cliques(G_subgraph, G_un_subgraph, read_node_map, read_db)
     #merge_linked_cliques_3(G_subgraph, G_un_subgraph, read_node_map, read_db, 4)
     #pdb.set_trace()
     G_subgraph = linear_merge_linked_cliques(G_subgraph, G_un_subgraph, read_node_map, read_db, 4)
-    print "The nodes of the subgraph now is: %d; edges is: %d." % (len(G_subgraph.nodes()), len(G_subgraph.edges())) 
+    print("The nodes of the subgraph now is: %d; edges is: %d." % (len(G_subgraph.nodes()), len(G_subgraph.edges()))) 
 
     DFS_collapse_graph(G_subgraph, read_node_map, read_db)
-    print "The nodes of the subgraph after merge cliques is: %d; edges is: %d." % (len(G_subgraph.nodes()),len(G_subgraph.edges()))
-    print datetime.now()-start_time
+    print("The nodes of the subgraph after merge cliques is: %d; edges is: %d." % (len(G_subgraph.nodes()),len(G_subgraph.edges())))
+    print(datetime.now()-start_time)
 
     ## remove transitive edges
     idx+=1
     DFS_transitive_reduction(G_subgraph)
     DFS_collapse_graph(G_subgraph, read_node_map, read_db)
-    print "The nodes of the subgraph after removing transitive edges is: %d; edges is: %d." % (len(G_subgraph.nodes()),len(G_subgraph.edges()))
+    print("The nodes of the subgraph after removing transitive edges is: %d; edges is: %d." % (len(G_subgraph.nodes()),len(G_subgraph.edges())))
 
     #pdb.set_trace()
     
@@ -373,7 +373,7 @@ for subgraph in subgraphs:
         if int(G_subgraph[this_edge[0]][this_edge[1]][0]['label'])<overlap_cutoff:
             G_subgraph.remove_edge(this_edge[0], this_edge[1])
     DFS_collapse_graph(G_subgraph, read_node_map, read_db)
-    print "Collapsed graph after deleting low overlap edges, nodes number: %d, edges number: %d." % (len(G_subgraph),len(G_subgraph.edges()))
+    print("Collapsed graph after deleting low overlap edges, nodes number: %d, edges number: %d." % (len(G_subgraph),len(G_subgraph.edges())))
     
     for N in G_subgraph.nodes():
         f_node0.write('>'+N+'\n'+read_db[N]+'\n')
@@ -406,9 +406,9 @@ for subgraph in subgraphs:
         #DFS_collapse_graph(G_subgraph, read_node_map, read_db)
         new_edge_num=len(G_subgraph.edges())
         new_node_num=len(G_subgraph.nodes())
-        print "After binning, the number of nodes: %d, number of edges: %d."%(new_node_num, new_edge_num)
-    print 'Loop:',loop
-    print "After binning, the number of nodes: %d, number of edges: %d."%(new_node_num, new_edge_num)
+        print("After binning, the number of nodes: %d, number of edges: %d."%(new_node_num, new_edge_num))
+    print('Loop:',loop)
+    print("After binning, the number of nodes: %d, number of edges: %d."%(new_node_num, new_edge_num))
     
     # remove tips and bubbles
     old_edge_num=len(G_subgraph.edges())
@@ -430,7 +430,7 @@ for subgraph in subgraphs:
     for N in G_subgraph.nodes():
         if not N in PE_G:
             PE_G.add_node(N)
-    print "After removing tips and bubbles, nodes number: %d, number of edges: %d" % (len(G_subgraph), len(G_subgraph.edges()))
+    print("After removing tips and bubbles, nodes number: %d, number of edges: %d" % (len(G_subgraph), len(G_subgraph.edges())))
     #plot_graph(G_subgraph, "HIV_graph.png") 
     #pdb.set_trace()
     #"""
@@ -444,10 +444,10 @@ for subgraph in subgraphs:
     assembled_nodes=set([])
     starting_nodes=[n for n in G_subgraph.nodes() if G_subgraph.in_degree(n)==0]
     for start_node in starting_nodes:
-        print "Begin a new start node:",start_node
+        print("Begin a new start node:",start_node)
         paths=list(DFS_paths_single_pair_end(G_subgraph, start_node, PE_G, read_db, Fragment_len))
         all_paths.extend(paths)
-        print len(all_paths)
+        print(len(all_paths))
     
     for path in all_paths:
         out_path="--".join(path)
@@ -468,7 +468,7 @@ for subgraph in subgraphs:
     paths_unassembled=[]
     ## Handle the unassembled nodes
     unassembled_nodes=set(G_subgraph.nodes())-assembled_nodes
-    print "Unassembled nodes!", len(unassembled_nodes)
+    print("Unassembled nodes!", len(unassembled_nodes))
     old_un_num = len(unassembled_nodes)
     new_un_num = 0
     loop = 0
@@ -478,7 +478,7 @@ for subgraph in subgraphs:
 
         new_starting_nodes=[n for n in sub_sub_graph.nodes() if sub_sub_graph.in_degree(n)==0]
         for start_node in new_starting_nodes:
-            print start_node
+            print(start_node)
             paths=list(DFS_paths_single_pair_end_unassembled(G_subgraph, start_node, PE_G, read_db, Fragment_len))
             paths_unassembled.extend(paths)
             for path in paths:
@@ -491,8 +491,8 @@ for subgraph in subgraphs:
         loop+=1
         
         #pdb.set_trace()
-        print "Loop: %d." % loop
-        print "Unassembled nodes!",len(set(G_subgraph.nodes())-assembled_nodes)
+        print("Loop: %d." % loop)
+        print("Unassembled nodes!",len(set(G_subgraph.nodes())-assembled_nodes))
 
     ## assemble contigs from the subgraph
     contigs=get_assemblie(G_subgraph, paths_unassembled, read_db)  # a dictionary, key: path information, value: assembled sequence

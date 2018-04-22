@@ -61,12 +61,12 @@ def create_graph(des_list, edge_file):
                 
                 read_node_dict[read_2]=read_2
             elif read_2 in G[read_1]:
-                print "Duplicate edge found!",line.strip()
+                print("Duplicate edge found!",line.strip())
                 if int(overlap_len)>int(G[read_1][read_2][0]['label']):
                     G[read_1][read_2][0]['label']=overlap_len
 
         if unconcordant_edge>0:
-            print "Unconcordant overlap found:%d."%(unconcordant_edge)
+            print("Unconcordant overlap found:%d."%(unconcordant_edge))
     return G, read_node_dict 
 
 def read_pair_file(pair_file, read_map):
@@ -106,7 +106,7 @@ def get_seq_from_fa_mix(fa_file, des_file):
                 count+=1
             else:
                 break
-        print line
+        print(line)
 
         read_map_pair[line[:-1]] = str(count)
         read_pair[str(count)] = line[:-1]
@@ -143,8 +143,8 @@ def get_seq_from_fa_mix(fa_file, des_file):
                         read_idx = read_map_pair[read_name]
                     seq_dict[read_idx]+=line
     pdb.set_trace()
-    print not_found
-    print len(read_map_single), len(read_map_pair), len(seq_dict)
+    print(not_found)
+    print(len(read_map_single), len(read_map_pair), len(seq_dict))
     return read_map_single, read_map_pair, read_single, read_pair, read_name_list, seq_dict
 
 def create_graph_mix(des_list, edge_file, single_end_reads_num):
@@ -174,12 +174,12 @@ def create_graph_mix(des_list, edge_file, single_end_reads_num):
                 read_node_dict[read_2] = read_2
 
             elif read_2 in G[read_1]:
-                print "Duplicate edge found!",line.strip()
+                print("Duplicate edge found!",line.strip())
                 if int(overlap_len)>int(G[read_1][read_2][0]['label']):
                     G[read_1][read_2][0]['label']=overlap_len
 
         if unconcordant_edge>0:
-            print "Unconcordant overlap found:%d."%(unconcordant_edge)
+            print("Unconcordant overlap found:%d."%(unconcordant_edge))
     return G, read_node_dict 
 
 

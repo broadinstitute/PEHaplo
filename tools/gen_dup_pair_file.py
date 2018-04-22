@@ -30,8 +30,8 @@ with open(rmdup_file,'r') as f:
             else:
                 rmdup_single_end_reads.pop(base)
                 single_seq.pop(base)
-print "Single-end reads number: %d." % len(rmdup_single_end_reads)
-print "Total reads number: %d." % count
+print("Single-end reads number: %d." % len(rmdup_single_end_reads))
+print("Total reads number: %d." % count)
 
 raw_rmdup_seq={}
 with open(raw_rmdup_file,'r') as f:
@@ -81,8 +81,8 @@ with open(pair2_file,'r') as f:
                         unconcordant2+=1
                     #    pdb.set_trace()
                     #    print raw_rmdup_seq[seq]
-print "%d single-end reads have been found their pairs's sequences." % pair_count
-print "Unconcordant duplicated pair on .1 file: %d; on .2 file: %d." % (unconcordant1, unconcordant2)
+print("%d single-end reads have been found their pairs's sequences." % pair_count)
+print("Unconcordant duplicated pair on .1 file: %d; on .2 file: %d." % (unconcordant1, unconcordant2))
 f_out.close()
 
 

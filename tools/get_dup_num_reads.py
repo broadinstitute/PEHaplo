@@ -18,6 +18,6 @@ with open(fa_file,'r') as f:
                 kept_num+=1
                 f_out.write(title+'\n'+seq+'\n')
 
-print "Total reads number:\t",total_num
-print "Kept reads number:\t",kept_num
+print("Total reads number:\t",total_num)
+print("Kept reads number:\t",kept_num)
 f_out.close()

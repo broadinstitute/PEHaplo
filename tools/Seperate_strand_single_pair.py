@@ -88,7 +88,7 @@ def create_graph_with_fq(edge_file, des_list):
             if not read_2 in G[read_1] and (not read_1==read_2): # bug fixed, judge whether the edge already exist, remove the edge connecting to self
                 G.add_edge(read_1,read_2,label=overlap_len,con_type=connect_type)
             elif read_2 in G[read_1]:
-                print "Duplicate edge found!",line.strip()
+                print("Duplicate edge found!",line.strip())
                 if int(overlap_len)>int(G[read_1][read_2]['label']): # replace the edge with the larger overlap
                     G[read_1][read_2]['label'] = overlap_len
     return G 
@@ -431,9 +431,9 @@ def BFS_tranverse_graph_pair(G,read_db,des_list,start_node, pair1_dict, pair2_di
 
 
 def output_reads(plus_dict, minus_dict,des_list, f1, f2):
-    plus_reads=plus_dict.keys()
+    plus_reads=list(plus_dict.keys())
     plus_reads=[int(x) for x in plus_reads]
-    minus_reads=minus_dict.keys()
+    minus_reads=list(minus_dict.keys())
     minus_reads=[int(x) for x in minus_reads]
     plus_reads=sorted(plus_reads)
     minus_reads=sorted(minus_reads)
@@ -468,7 +468,7 @@ pair1_dict, pair2_dict = read_pair_file(pair_file, read_map)
 
 read_node_dict={}
 G=create_graph_with_fq(edge_file, des_list)
-print "Graph construction finished!"
+print("Graph construction finished!")
 
 idx=0
 while(len(G)>0):

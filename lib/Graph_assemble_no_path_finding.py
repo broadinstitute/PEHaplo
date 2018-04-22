@@ -31,11 +31,11 @@ def get_max_score_node(score_dict):
     return max_score_node
 
 def classify_SISO_score_node(SISO_dict,plan_dict,PE_plan_dict,path_dict,path_plan_dict):
-    plan_flag=sum(i>0 for i in plan_dict.values())
-    PE_plan_flag=sum(i>0 for i in PE_plan_dict.values())
-    path_flag=sum(i>0 for i in path_dict.values())
-    path_plan_flag=sum(i>0 for i in path_plan_dict.values())
-    score_vec=SISO_dict.values()
+    plan_flag=sum(i>0 for i in list(plan_dict.values()))
+    PE_plan_flag=sum(i>0 for i in list(PE_plan_dict.values()))
+    path_flag=sum(i>0 for i in list(path_dict.values()))
+    path_plan_flag=sum(i>0 for i in list(path_plan_dict.values()))
+    score_vec=list(SISO_dict.values())
     diff=[score_vec[i+1]-score_vec[i] for i in range(len(score_vec)-1)]
     
     max_score_node=0
@@ -192,7 +192,7 @@ def DFS_paths_single_pair_end(G, start_node, PE_G, read_db, fragment_len=300):
             max_score_suc=bifurcation_classifier(vertex,G,PE_G,path,SISO,read_db,fragment_len)
       
         if len(succ_node_all)<G.out_degree(vertex):
-            print "Finding a cycle:",path
+            print("Finding a cycle:",path)
             yield path
             continue
 
@@ -403,7 +403,7 @@ def DFS_paths_single_pair_end_unassembled(G, start_node, PE_G, read_db, fragment
             max_score_suc=bifurcation_classifier(vertex,G,PE_G,path,SISO,read_db,fragment_len)
       
         if len(succ_node_all)<G.out_degree(vertex):
-            print "Finding a cycle:",path
+            print("Finding a cycle:",path)
             yield path
             continue
 

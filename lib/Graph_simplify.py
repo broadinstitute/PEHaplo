@@ -307,7 +307,7 @@ def create_paired_end_graph(read_node_dict):
     pair_end_edges, key: nodes pair, value: pairs between these two nodes
     """
     paired_end_edges={}
-    for read in read_node_dict.keys():
+    for read in list(read_node_dict.keys()):
         if int(read)%2==0: # pair.1
             pair=str(int(read)+1)
             if pair in read_node_dict:
@@ -338,7 +338,7 @@ def create_paired_end_graph_with_pairs(read_node_dict, pairs_dict):
     pair_end_edges, key: nodes pair, value: pairs between these two nodes
     """
     paired_end_edges={}
-    for pair in pairs_dict.keys():
+    for pair in list(pairs_dict.keys()):
         if (not pair[0] in read_node_dict) or (not pair[1] in read_node_dict):
             continue
         pair_n1 = read_node_dict[pair[0]]

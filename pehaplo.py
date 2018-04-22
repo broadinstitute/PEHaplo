@@ -44,7 +44,7 @@ def main():
 
         ## error correction
         #"""
-        print "Error correction begins -------------------------------------------------"
+        print("Error correction begins -------------------------------------------------")
         if args.threads:
             subprocess.check_call("karect -correct -inputfile=%s -inputfile=%s -threads=%s -celltype=haploid -matchtype=hamming -aggressive=5.0 -numstages=2 -errorrate=0.25 -errorratesec=0.25" % (args.input_f1, args.input_f2, args.threads), shell=True)
         else:
@@ -55,7 +55,7 @@ def main():
         subprocess.check_call('python "%s"/tools/join_pair_end_fasta.py karect_%s karect_%s karect_whole.fa' % (base_path, fa1_file, fa2_file), shell=True)
 
         ## remove duplicates and substrings
-        print "Removing duplicates and substrings -------------------------------------"
+        print("Removing duplicates and substrings -------------------------------------")
         subprocess.check_call("sga preprocess karect_whole.fa >karect_whole_preprocessed.fa", shell=True)
         if args.threads:
             subprocess.check_call("sga index -t %s karect_whole_preprocessed.fa" % args.threads, shell=True)
@@ -71,7 +71,7 @@ def main():
             subprocess.check_call("cp karect_whole_preprocessed.rmdup.fa kept_num.fa", shell=True)
         
         ## readjoiner for overlap graph
-        print "Reads orientation adjustment ------------------------------------------"
+        print("Reads orientation adjustment ------------------------------------------")
         subprocess.check_call("gt readjoiner prefilter -q -des -readset samp -db kept_num.fa", shell=True)
         if args.memory:
             subprocess.check_call("gt readjoiner overlap -readset samp -memlimit %s -l %s" % (args.memory, args.overlap_len), shell=True)
@@ -86,7 +86,7 @@ def main():
 
 
         # ---------------- Assembly ------------------
-        print "Begin assembly --------------------------------------------------------"
+        print("Begin assembly --------------------------------------------------------")
         subprocess.check_call('python "%s"/tools/gen_dup_pair_file.py kept_num.fa karect_whole_preprocessed.rmdup.fa karect_%s karect_%s' %(base_path, fa1_file, fa2_file), shell=True)
         
         if args.overlap_len1:
@@ -106,7 +106,7 @@ def main():
 
         # ---------------- error correction -------------------------
         if args.contig_correct == 'yes':
-            print "Begin contig correction ------------------------------------------- "
+            print("Begin contig correction ------------------------------------------- ")
             index_path = 'index'
             if not os.path.exists(index_path):
                 os.makedirs(index_path)

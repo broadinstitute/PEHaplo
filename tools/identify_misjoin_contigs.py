@@ -132,7 +132,7 @@ def cal_discordant_interval_2(read_ids, reads_loc, single_reads_dict, inv, con_l
                 pair = read_id.split('/')[0]+'/1'
                 pair_loc = reads_loc[pair][1]
             else:
-                print "Read_id is not pair.1 or pair.2: ", read_id
+                print("Read_id is not pair.1 or pair.2: ", read_id)
             if strand=='0' and int(loc)>=left_margin and int(loc)<inv[0]:
                 pl_num+=1
                 pair_len=abs(int(pair_loc)-int(loc))+read_len+1
@@ -351,7 +351,7 @@ with open(sam_file,'r') as f:
             else:
                 unaligned+=1
 
-print "Unaligned reads number: %d." % unaligned
+print("Unaligned reads number: %d." % unaligned)
 
 
 #pdb.set_trace()
@@ -425,7 +425,7 @@ for i in range(len(contig_read_ids)):
     
     ## calculate the interval cutoff
     inv_cut=-math.log(0.01)*con_len/float(count_pair)
-    print i,inv_cut
+    print(i,inv_cut)
     ## step1: find the intervals
     for pair in contig_pairs:
         strand1, align1=reads_loc[i][pair[0]][0], int(reads_loc[i][pair[0]][1])
@@ -449,7 +449,7 @@ for i in range(len(contig_read_ids)):
     for inv in inv_clusters:
         if inv[1]-inv[0]+1>=max(20, inv_cut): # the clustered interval is set to be at least 20 bp
             tmp_intervals2.append(inv)
-    print i,tmp_intervals2
+    print(i,tmp_intervals2)
    
     ## step2: validate the misjoin regions
     tmp_intervals3=[]
@@ -481,7 +481,7 @@ for i in range(len(contig_read_ids)):
         if pr==0 and sr>0:
             inv_temp[1] = min(con_len, inv[1] + Fragment_len/2)
         tmp_intervals3.append(inv_temp)
-    print i,tmp_intervals3
+    print(i,tmp_intervals3)
     
     #pdb.set_trace()
 
@@ -538,7 +538,7 @@ for i in range(len(contig_read_ids)):
         else:
             #pdb.set_trace()
             clip_loc = get_wide_clip(clip_loc)
-            print i, clip_loc
+            print(i, clip_loc)
             if not clip_loc:
                 f_out.write('>'+con_name+'\n'+seq+'\n')
                 continue
@@ -550,7 +550,7 @@ for i in range(len(contig_read_ids)):
                     if clip_loc[k-1][1] < clip_loc[k][0]:
                         clip_parts.append([clip_loc[k-1][1],clip_loc[k][0]])
             clip_parts.append([clip_loc[-1][1],len(seq)])
-            print i, clip_parts
+            print(i, clip_parts)
                 
             clip_idx=1
             for clip in clip_parts:

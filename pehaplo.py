@@ -36,7 +36,7 @@ def main():
 
     args = parser.parse_args()
     
-    base_path = os.path.dirname(os.path.abspath(__file__))
+    base_path = os.path.dirname(os.path.abspath(os.path.realpath(__file__)))
 
     if args.input_f1 and args.input_f2 and args.overlap_len and args.read_len:
         # ---------------- Preprocess ------------------

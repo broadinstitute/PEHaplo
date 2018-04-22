@@ -11,12 +11,18 @@ def get_seq_from_fa(fa_file,des_file):
     read_map={}  # key: read_name, value: read_index
     read_name_list=[] # read names
     count=0
-    with open(des_file,'r') as f:
-        for line in f:
+
+    with open(des_file,'rb') as f:
+        des_file_contents = f.read()
+        des_file_reads_lines = des_file_contents[:des_file_contents.index(b'\r')].decode().strip().split()
+
+        for line in des_file_reads_lines:
             # HCV_1-163200/1
-            read_map[line[:-1]]=str(count)
-            read_name_list.append(line[:-1])
-            count+=1
+            read_name = line.strip()
+            if read_name:
+                read_map[read_name]=str(count)
+                read_name_list.append(read_name)
+                count+=1
 
     seq_dict={}  # key: read_index, value: the corresponding sequence
     with open(fa_file,'r') as f:
